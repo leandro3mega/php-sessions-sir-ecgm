@@ -12,6 +12,6 @@ $connectDB = new mysqli($hostDB, $userDB, $passDB, $nameDB);
 if ($connectDB->connect_errno) {
     die("error : " . $connectDB->connect_error);
 }
-echo "Connected";
+//echo "Connected";
 
 $connectDB->set_charset("utf8");
