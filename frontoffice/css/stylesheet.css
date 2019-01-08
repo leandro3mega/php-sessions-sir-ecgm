@@ -7,3 +7,23 @@
 .card-register {
     max-width: 40rem;
 }
+
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+body {
+    background-color: rgba(0, 136, 255, 0.35) !important;
+    min-width: 460px;
+}
+
+.fundo-container {
+    background-color: white !important;
+}
+
+.testing {
+    background-color: rgba(0, 51, 95, 0.5)
+}
