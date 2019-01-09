@@ -15,8 +15,9 @@ label {
     font-weight: 700;
 }
 
-body {
-    background-color: rgba(0, 136, 255, 0.35) !important;
+.body-site {
+    /* background-color: rgba(0, 136, 255, 0.35) !important; */
+    background-color: rgba(187, 187, 187, 0.486) !important;
     min-width: 460px;
 }
 
@@ -24,6 +25,15 @@ body {
     background-color: white !important;
 }
 
+.h4-overflow-limit {
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+}
+
+
 .testing {
-    background-color: rgba(0, 51, 95, 0.5)
+    background-color: rgb(19, 133, 185);
+    background-color: rgb(19, 185, 157);
 }

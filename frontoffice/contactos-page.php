@@ -36,7 +36,7 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
 
 </head>
 
-<body>
+<body class="body-site">
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -58,9 +58,6 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
                         <a class="nav-link" href="grupos-page.php">Grupos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="procurar-page.php">Procurar</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="perfil-page.php">
                             <?php echo($_SESSION['nome']); ?>
                         </a>
@@ -79,30 +76,31 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
 
         <!-- Pesquisa -->
         <div class="row">
-            <div class="col-lg-12" style=" padding:1rem; background-color:rgba(0, 51, 95, 0.5);">
+            <div class="col-lg-12" style=" padding:1rem; background-color: rgb(19, 133, 185)">
                 <div class="col-md-10 col-lg-6 mx-auto text-center">
 
                     <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
                     <h2 class="text-white mb-5">Procure contactos</h2>
 
-                    <form class="form-inline d-flex">
-                        <input type="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail"
+                    <!--<form class="form-inline d-flex">-->
+                    <div class="form-group form-inline">
+                        <input type="text" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputPesquisa"
                             placeholder="Pesquisar...">
-                        <button type="submit" class="btn btn-dark mx-auto" style="border: 2px #ffff !important; font-size: 1.1rem;">Procurar</button>
-                    </form>
+                        <!--<button class="btn btn-dark mx-auto" onclick="pesquisa()" style="border: 2px #ffff !important; font-size: 1.1rem;">Procurar</button>-->
+                    </div>
+                    <!--</form>-->
 
                 </div>
             </div>
         </div>
 
         <!-- Container -->
-        <div class="row" style="padding:1rem !important; padding-top:2rem !important;">
+        <div class='row' id="meusContactos" style="min-height: 400px; padding:1rem !important; padding-top:2rem !important;">
 
             <?php
                     $lista_ids = array();
                     $diretorio = "images/contactos/";
-
-
+                    
                     if ($stmt = $connectDB->prepare("SELECT fk_idutilizador_contacto FROM lista_contactos WHERE fk_idutilizador = ?")) {
                         // Bind variables to the prepared statement as parameters
                         $stmt->bind_param("s", $param_id);
@@ -152,13 +150,29 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
                                 $stmt->fetch();
 
                                 if ($stmt->num_rows == 1) {
+
                                     //echo("</br>Contacto: " . " | Nome: " . $r_nome);
                                     echo "
-                                        <div class='col-lg-3 col-sm-3 text-center mb-4' name='contacto' id='" . $lista_ids[$i] . "'>
-                                            <input type='hidden' value='" . $lista_ids[$i] . "' name='contacto1'>
-                                            <img class='rounded-circle img-fluid d-block mx-auto' style='height:150px' src='" . $diretorio . $r_fotografia . "' alt=''>
-                                            <h3>" . $r_nome . "</h3>
-                                            <p>" . $r_email . "</p>
+                                        <div class='col-lg-6'>
+                                        <form id='".$lista_ids[$i]."' action='contacto-page.php' enctype='multipart/form-data' method='GET'>
+                                        <div class='row' name=contacto id='" . $lista_ids[$i] . "' style='max-height:160px'>
+                                        
+                                        <div class='col-md-6'>
+                                        <a href='#'>
+                                        <img class='img-fluid rounded mb-3 mb-md-0' style='height:-webkit-fill-available;' src='". $diretorio . $r_fotografia ."' alt=''>
+                                        <input type='hidden' value='" . $lista_ids[$i] . "' name='contacto_id'>
+                                        <input type='hidden' value='" . $r_nome . "' name='contacto_nome'>
+                                        </a>
+                                        </div>
+                                        
+                                        <div class='col-md-6'>
+                                        <h3>". $r_nome ."</h3>
+                                        <p>". $r_numero ."</p>
+                                        <input type='submit' class='btn btn-outline-primary' value='Ver Perfil'>
+                                        </div>
+                                        
+                                        </div>
+                                        </form>
                                         </div>
                                     ";
                                 } else {
@@ -173,6 +187,12 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
                     $stmt->close();
 
                 ?>
+
+
+
+        </div>
+
+        <div class="row" id="pesquisaContainer">
 
         </div>
 
@@ -202,6 +222,106 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
         });
 
     });
+
+    var inputPesquisa = document.getElementById("inputPesquisa");
+    var contactosContainer = document.getElementById("meusContactos");
+    var pesquisaContainer = document.getElementById("pesquisaContainer");
+
+    inputPesquisa.addEventListener("keyup", pesquisaContacto);
+
+    function pesquisaContacto() {
+        var pesquisa = inputPesquisa.value;
+        console.log(inputPesquisa.value);
+
+        if (!pesquisa) {
+            console.log("Sem valor")
+            contactosContainer.style = "min-height: 400px; padding:1rem !important; padding-top:2rem !important;";
+            pesquisaContainer.style = "display:none";
+        } else {
+            console.log("Com valor")
+            contactosContainer.style = "display:none";
+            pesquisaContainer.style = "min-height: 400px; padding:1rem !important; padding-top:2rem !important;";
+
+            pesquisaContainer.innerHTML = "";
+
+            //-- Se o input de pesquisa tive conteudo, verifica se existem contactos com info identica
+            $.ajax({
+                type: "POST",
+                url: 'pesquisa.php',
+                data: {
+                    'action': 'get_contacto',
+                    'pesquisa': pesquisa
+                },
+                dataType: 'json',
+                success: function(response) {
+                    $.each(response, function(index, element) {
+                        console.log(element); // print json code
+
+                        $("#pesquisaContainer").append(
+                            "<div class = 'col-lg-3 col-sm-3 text-center mb-4' name ='contacto[]' style=''>" +
+
+                            "<form id='formPesquisaContacto[]' action='contacto-page.php' enctype='multipart/form-data' method='GET'>" +
+                            "<div class='form-group'>" +
+
+                            "<img class='rounded-circle img-fluid d-block mx-auto'style='height:150px' src ='images/contactos/" +
+                            element.fotografia + "' alt = ''>" +
+
+                            "<input type = 'hidden' value = '" + element.idutilizador +
+                            "'name = 'contacto_id' >" +
+                            "<input type = 'hidden' value = '" + element.nome +
+                            "'name = 'contacto_nome' >" +
+
+                            "<h4 class='h4-overflow-limit'> " + element.nome + "</h4>" +
+                            //"<p>" + element.numero + "</p>" +
+                            "</div>" +
+                            "<input type='submit' class='btn btn-outline-primary' value='Ver Perfil'>" +
+                            "</form>" +
+
+                            "</div>"
+
+                        );
+                    });
+                    //alert(response);
+                }
+            });
+        }
+    }
+    /*
+    function pesquisa() {
+        var inputPesquisa = document.getElementById("inputPesquisa");
+        //var pesquisaContainer = document.getElementById("pesquisaContainer");
+        var pesquisa = inputPesquisa.value;
+
+        console.log("Pesquisa: " + pesquisa);
+
+        $.ajax({
+            type: "POST",
+            url: 'pesquisa.php',
+            data: {
+                'action': 'get_contacto',
+                'pesquisa': pesquisa
+            },
+            dataType: 'json',
+            success: function(response) {
+                $.each(response, function(index, element) {
+                    console.log(element); // print json code
+
+                    $("#pesquisaContainer").append(
+                        "<div class = 'col-lg-3 col-sm-3 text-center mb-4' name = 'contacto' id = '" +
+                        element.idutilizador + "' >" +
+                        "<input type = 'hidden' value = '" + element.idutilizador +
+                        "'name = 'contacto1' >" +
+                        "<img class = 'rounded-circle img-fluid d-block mx-auto' style = 'height:150px' src = 'images/contactos/" +
+                        element.fotografia + "' alt = '' >" +
+                        "<h3> " + element.nome + "</h3>" +
+                        "<p>" + element.email + "</p>" +
+                        "</div>"
+                    );
+                });
+                //alert(response);
+            }
+        });
+    }*/
 </script>
 
 </html>

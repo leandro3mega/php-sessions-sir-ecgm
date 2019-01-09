@@ -61,10 +61,9 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
                         <a class="nav-link" href="procurar-page.php">Procurar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="perfil-page.php">Perfil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Leandro</a>
+                        <a class="nav-link" href="perfil-page.php">
+                            <?php echo($_SESSION['nome']); ?>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">(Sair)</a>
@@ -82,27 +81,7 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
             <div class="col-lg-12">
                 <h2 class="my-4">Contactos</h2>
             </div>
-            <div class="col-lg-3 col-sm-4 text-center mb-4">
-                <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-                <h3>John Smith
-                    <small>Job Title</small>
-                </h3>
-                <p>social links!</p>
-            </div>
-            <div class="col-lg-3 col-sm-4 text-center mb-4">
-                <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-                <h3>John Smith
-                    <small>Job Title</small>
-                </h3>
-                <p>social links!</p>
-            </div>
-            <div class="col-lg-3 col-sm-4 text-center mb-4">
-                <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-                <h3>John Smith
-                    <small>Job Title</small>
-                </h3>
-                <p>social links!</p>
-            </div>
+
             <div class="col-lg-3 col-sm-4 text-center mb-4">
                 <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
                 <h3>John Smith
@@ -117,27 +96,6 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
         <div class="row">
             <div class="col-lg-12">
                 <h2 class="my-4">Grupos</h2>
-            </div>
-            <div class="col-lg-3 col-sm-4 text-center mb-4">
-                <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-                <h3>John Smith
-                    <small>Job Title</small>
-                </h3>
-                <p>social links!</p>
-            </div>
-            <div class="col-lg-3 col-sm-4 text-center mb-4">
-                <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-                <h3>John Smith
-                    <small>Job Title</small>
-                </h3>
-                <p>social links!</p>
-            </div>
-            <div class="col-lg-3 col-sm-4 text-center mb-4">
-                <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-                <h3>John Smith
-                    <small>Job Title</small>
-                </h3>
-                <p>social links!</p>
             </div>
             <div class="col-lg-3 col-sm-4 text-center mb-4">
                 <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
