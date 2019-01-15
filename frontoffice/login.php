@@ -55,8 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->bind_result($id, $email, $hashed_password, $nome, $numero, $fotografia);
                 if ($stmt->fetch()) {
                     if (password_verify($password, $hashed_password)) {
-                        // Password is correct, so start a new session
-                        //session_start();
                             
                         // Store data in session variables
                         $_SESSION["logged"] = true;
@@ -67,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION["fotografia"] = $fotografia;
                             
                         // Redirect user to index page
-                        header("location: index.php");
+                        header("location: contactos-page.php");
                     } else {
                         // Display an error message if password is not valid
                         echo "A palavra passe inserida não é valida.";

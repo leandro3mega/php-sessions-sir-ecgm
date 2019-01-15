@@ -18,20 +18,19 @@ $id = (int)$_GET['contacto_id'];
 //echo("id: " . $id);
 
 $result = mysqli_query($connectDB, "SELECT idutilizador, nome, email, numero, fotografia 
-    FROM utilizador 
-    WHERE idutilizador=$id");
+FROM utilizador 
+WHERE idutilizador=$id");
 
-    if (mysqli_num_rows($result) == 1) {
-        $row = $result->fetch_assoc();
+if (mysqli_num_rows($result) == 1) {
+    $row = $result->fetch_assoc();
 
-        $nome = $row['nome'];
-        $email = $row['email'];
-        $email = $row['email'];
-        $numero = $row['numero'];
-        $fotografia = $row['fotografia'];
-    } else {
-        echo "</br> Não encontrou contacto";
-    }
+    $nome = $row['nome'];
+    $email = $row['email'];
+    $numero = $row['numero'];
+    $fotografia = $row['fotografia'];
+} else {
+    echo "</br> Não encontrou contacto";
+}
 
 
 
@@ -73,16 +72,10 @@ $result = mysqli_query($connectDB, "SELECT idutilizador, nome, email, numero, fo
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Início</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="contactos-page.php">Contactos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="grupos-page.php">Grupos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="procurar-page.php">Procurar</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="perfil-page.php">
@@ -157,6 +150,18 @@ $result = mysqli_query($connectDB, "SELECT idutilizador, nome, email, numero, fo
                     <input type = 'hidden' value = '" . $nome . "'name = 'contacto_nome' >
                     ";
 
+                    //## URL
+                    echo "
+                    <div class='form-group' style='margin-top:2rem;'>
+                        <label>Fotografia</label>
+                        <input type='url' class='form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0' disabled name='grupourl'
+                            id='igrupourl' value='" . $url = " http" . (($_SERVER['SERVER_PORT']==443) ? 's' : '')
+                            . '://' . $_SERVER['HTTP_HOST'] . '/php-sessions-sir-ecgm/frontoffice/contacto-page.php?contacto_id=' . $id . "'>
+
+                    </div>
+                    ";
+
+
                     //#######
                     // Botao de adicionar contacto -->
                     $this_user = $_SESSION['id'];
@@ -171,16 +176,16 @@ $result = mysqli_query($connectDB, "SELECT idutilizador, nome, email, numero, fo
                         // é contacto
                         echo "
                         <div class='row' style='margin-left:auto; margin-right:auto; padding-top: 50px; padding-bottom: 50px;'>
-                            <input type='submit' class='btn ' style='color:red; border-color:red' value='Remover'>
+                            <button id='". $id ."' class='btn btn-delete' onclick='removerContacto(this.id)'>Remover</button>    
                         </div>
                         ";
                     } else {
                         // echo "</br> Não é contacto";
                         echo "
-                        <div class='row' style='margin-left:auto; margin-right:auto; padding-top: 50px; padding-bottom: 50px;'>
-                            <input type='submit' class='btn btn-outline-primary' value='Adicionar'>
-                        </div>
-                        ";
+                            <div class='row' style='margin-left:auto; margin-right:auto; padding-top: 50px; padding-bottom: 50px;'>
+                                <button id='". $id ."' class='btn btn-outline-primary' onclick='adicionarContacto(this.id)'>Adicionar</button>
+                            </div>
+                            ";
                     }
 
                     
@@ -206,5 +211,45 @@ $result = mysqli_query($connectDB, "SELECT idutilizador, nome, email, numero, fo
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
+<script>
+function adicionarContacto(contacto) {
+    if (confirm('Tem a certeza que pretende adicionar o contacto?')) {
+        $.ajax({
+            type: "POST",
+            url: 'adicionar.php',
+            data: {
+                'action': 'add_to_lista',
+                'contacto': contacto
+            },
+            success: function(response) {
+                location.reload();
+            }
+        });
+
+    } else {
+        return;
+    }
+}
+
+function removerContacto(contacto) {
+    if (confirm('Tem a certeza que pretende remover o contacto?')) {
+        $.ajax({
+            type: "POST",
+            url: 'delete.php',
+            data: {
+                'action': 'delete_from_lista',
+                'contacto': contacto
+            },
+            success: function(response) {
+                location.reload();
+            }
+        });
+
+    } else {
+        return;
+    }
+}
+</script>
 
 </html>

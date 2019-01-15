@@ -48,9 +48,6 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item ">
-                        <a class="nav-link" href="index.php">Início</a>
-                    </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="contactos-page.php">Contactos</a>
                     </li>
@@ -210,90 +207,41 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
 
 </body>
 <script>
-    $(document).ready(function() {
-        $('[name="contacto"]').each(function() {
-            $(this).click(function() {
-                //alert($(this).attr('id'));
-                console.log("ID: " + $(this).attr('id'));
+$(document).ready(function() {
+    $('[name="contacto"]').each(function() {
+        $(this).click(function() {
+            //alert($(this).attr('id'));
+            console.log("ID: " + $(this).attr('id'));
 
-                //-- Enviar id por post para contacto-page.php
+            //-- Enviar id por post para contacto-page.php
 
-            });
         });
-
     });
 
-    var inputPesquisa = document.getElementById("inputPesquisa");
-    var contactosContainer = document.getElementById("meusContactos");
-    var pesquisaContainer = document.getElementById("pesquisaContainer");
+});
 
-    inputPesquisa.addEventListener("keyup", pesquisaContacto);
+var inputPesquisa = document.getElementById("inputPesquisa");
+var contactosContainer = document.getElementById("meusContactos");
+var pesquisaContainer = document.getElementById("pesquisaContainer");
 
-    function pesquisaContacto() {
-        var pesquisa = inputPesquisa.value;
-        console.log(inputPesquisa.value);
+inputPesquisa.addEventListener("keyup", pesquisaContacto);
 
-        if (!pesquisa) {
-            console.log("Sem valor")
-            contactosContainer.style = "min-height: 400px; padding:1rem !important; padding-top:2rem !important;";
-            pesquisaContainer.style = "display:none";
-        } else {
-            console.log("Com valor")
-            contactosContainer.style = "display:none";
-            pesquisaContainer.style = "min-height: 400px; padding:1rem !important; padding-top:2rem !important;";
+function pesquisaContacto() {
+    var pesquisa = inputPesquisa.value;
+    console.log(inputPesquisa.value);
 
-            pesquisaContainer.innerHTML = "";
+    if (!pesquisa) {
+        console.log("Sem valor")
+        contactosContainer.style = "min-height: 400px; padding:1rem !important; padding-top:2rem !important;";
+        pesquisaContainer.style = "display:none";
+    } else {
+        console.log("Com valor")
+        contactosContainer.style = "display:none";
+        pesquisaContainer.style = "min-height: 400px; padding:1rem !important; padding-top:2rem !important;";
 
-            //-- Se o input de pesquisa tive conteudo, verifica se existem contactos com info identica
-            $.ajax({
-                type: "POST",
-                url: 'pesquisa.php',
-                data: {
-                    'action': 'get_contacto',
-                    'pesquisa': pesquisa
-                },
-                dataType: 'json',
-                success: function(response) {
-                    $.each(response, function(index, element) {
-                        console.log(element); // print json code
+        pesquisaContainer.innerHTML = "";
 
-                        $("#pesquisaContainer").append(
-                            "<div class = 'col-lg-3 col-sm-3 text-center mb-4' name ='contacto[]' style=''>" +
-
-                            "<form id='formPesquisaContacto[]' action='contacto-page.php' enctype='multipart/form-data' method='GET'>" +
-                            "<div class='form-group'>" +
-
-                            "<img class='rounded-circle img-fluid d-block mx-auto'style='height:150px' src ='images/contactos/" +
-                            element.fotografia + "' alt = ''>" +
-
-                            "<input type = 'hidden' value = '" + element.idutilizador +
-                            "'name = 'contacto_id' >" +
-                            "<input type = 'hidden' value = '" + element.nome +
-                            "'name = 'contacto_nome' >" +
-
-                            "<h4 class='h4-overflow-limit'> " + element.nome + "</h4>" +
-                            //"<p>" + element.numero + "</p>" +
-                            "</div>" +
-                            "<input type='submit' class='btn btn-outline-primary' value='Ver Perfil'>" +
-                            "</form>" +
-
-                            "</div>"
-
-                        );
-                    });
-                    //alert(response);
-                }
-            });
-        }
-    }
-    /*
-    function pesquisa() {
-        var inputPesquisa = document.getElementById("inputPesquisa");
-        //var pesquisaContainer = document.getElementById("pesquisaContainer");
-        var pesquisa = inputPesquisa.value;
-
-        console.log("Pesquisa: " + pesquisa);
-
+        //-- Se o input de pesquisa tive conteudo, verifica se existem contactos com info identica
         $.ajax({
             type: "POST",
             url: 'pesquisa.php',
@@ -307,21 +255,70 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
                     console.log(element); // print json code
 
                     $("#pesquisaContainer").append(
-                        "<div class = 'col-lg-3 col-sm-3 text-center mb-4' name = 'contacto' id = '" +
-                        element.idutilizador + "' >" +
+                        "<div class = 'col-lg-3 col-sm-3 text-center mb-4' name ='contacto[]' style=''>" +
+
+                        "<form id='formPesquisaContacto[]' action='contacto-page.php' enctype='multipart/form-data' method='GET'>" +
+                        "<div class='form-group'>" +
+
+                        "<img class='rounded-circle img-fluid d-block mx-auto'style='height:150px' src ='images/contactos/" +
+                        element.fotografia + "' alt = ''>" +
+
                         "<input type = 'hidden' value = '" + element.idutilizador +
-                        "'name = 'contacto1' >" +
-                        "<img class = 'rounded-circle img-fluid d-block mx-auto' style = 'height:150px' src = 'images/contactos/" +
-                        element.fotografia + "' alt = '' >" +
-                        "<h3> " + element.nome + "</h3>" +
-                        "<p>" + element.email + "</p>" +
+                        "'name = 'contacto_id' >" +
+                        "<input type = 'hidden' value = '" + element.nome +
+                        "'name = 'contacto_nome' >" +
+
+                        "<h4 class='h4-overflow-limit'> " + element.nome + "</h4>" +
+                        //"<p>" + element.numero + "</p>" +
+                        "</div>" +
+                        "<input type='submit' class='btn btn-outline-primary' value='Ver Perfil'>" +
+                        "</form>" +
+
                         "</div>"
+
                     );
                 });
                 //alert(response);
             }
         });
-    }*/
+    }
+}
+/*
+function pesquisa() {
+    var inputPesquisa = document.getElementById("inputPesquisa");
+    //var pesquisaContainer = document.getElementById("pesquisaContainer");
+    var pesquisa = inputPesquisa.value;
+
+    console.log("Pesquisa: " + pesquisa);
+
+    $.ajax({
+        type: "POST",
+        url: 'pesquisa.php',
+        data: {
+            'action': 'get_contacto',
+            'pesquisa': pesquisa
+        },
+        dataType: 'json',
+        success: function(response) {
+            $.each(response, function(index, element) {
+                console.log(element); // print json code
+
+                $("#pesquisaContainer").append(
+                    "<div class = 'col-lg-3 col-sm-3 text-center mb-4' name = 'contacto' id = '" +
+                    element.idutilizador + "' >" +
+                    "<input type = 'hidden' value = '" + element.idutilizador +
+                    "'name = 'contacto1' >" +
+                    "<img class = 'rounded-circle img-fluid d-block mx-auto' style = 'height:150px' src = 'images/contactos/" +
+                    element.fotografia + "' alt = '' >" +
+                    "<h3> " + element.nome + "</h3>" +
+                    "<p>" + element.email + "</p>" +
+                    "</div>"
+                );
+            });
+            //alert(response);
+        }
+    });
+}*/
 </script>
 
 </html>
