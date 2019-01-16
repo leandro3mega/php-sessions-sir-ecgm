@@ -87,6 +87,14 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
             </div>
         </div>
 
+        <div class="row">
+            <div class="form-group form-inline" style="margin-left:auto; margin-right: 15px; margin-top: 15px">
+
+                <a href="novo-grupo-page.php"><button id="" class="btn btn-novo-algo" onclick="">Novo Grupo</button></a>
+
+            </div>
+        </div>
+
 
         <!-- Container for grupos -->
         <div id="meusGrupos">
