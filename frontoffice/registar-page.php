@@ -20,7 +20,7 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Round About - Start Bootstrap Template</title>
+    <title>Tou Xim - Registar</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -143,77 +143,77 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
 </body>
 
 <script>
-    function validaForm() {
-        var password1 = document.getElementById("ipassword");
-        var password2 = document.getElementById("iconfirmPassword");
-        var hintPassword = document.getElementById("iHintPassword");
+function validaForm() {
+    var password1 = document.getElementById("ipassword");
+    var password2 = document.getElementById("iconfirmPassword");
+    var hintPassword = document.getElementById("iHintPassword");
 
-        if (password1.value != password2.value) {
-            hintPassword.style = "color: rgb(206, 77, 77)";
-            hintPassword.innerHTML = "As passwords não são iguais!";
-            return false;
-        } else {
-            hintPassword.style = "color: rgb(77, 206, 142);";
-            hintPassword.innerHTML = "";
-            return true;
-        }
-
+    if (password1.value != password2.value) {
+        hintPassword.style = "color: rgb(206, 77, 77)";
+        hintPassword.innerHTML = "As passwords não são iguais!";
+        return false;
+    } else {
+        hintPassword.style = "color: rgb(77, 206, 142);";
+        hintPassword.innerHTML = "";
+        return true;
     }
 
-    //-- Adiciona ou remove imagens dependendo do numero selecionado
-    var inputImage = document.getElementById("fotografia_file_upload_field");
-    inputImage.onchange = function() {
+}
 
-        var limiteSize = 1020; // 1 Megabyte
-        var file = this.files[0];
-        var input = this;
-        console.log(file);
+//-- Adiciona ou remove imagens dependendo do numero selecionado
+var inputImage = document.getElementById("fotografia_file_upload_field");
+inputImage.onchange = function() {
 
-        //##### Start of reader
-        var reader = new FileReader(); // CREATE AN NEW INSTANCE.
+    var limiteSize = 1020; // 1 Megabyte
+    var file = this.files[0];
+    var input = this;
+    console.log(file);
 
-        reader.onload = function(e) {
-            var img = new Image();
-            img.src = e.target.result;
+    //##### Start of reader
+    var reader = new FileReader(); // CREATE AN NEW INSTANCE.
 
-            img.onload = function() {
-                var valido = true;
-                var w = this.width;
-                var h = this.height;
-                var size = Math.round((file.size / 1024));
+    reader.onload = function(e) {
+        var img = new Image();
+        img.src = e.target.result;
 
-                console.log("File Name: " + file.name);
-                console.log("Width: " + w);
-                console.log("Height: " + h);
-                console.log("Size: " + Math.round((file.size / 1024)));
-                console.log("File Type: " + file.type);
-                console.log("Limite: " + limiteSize);
+        img.onload = function() {
+            var valido = true;
+            var w = this.width;
+            var h = this.height;
+            var size = Math.round((file.size / 1024));
 
-                if (file.type == "image/png" || file.type == "image/jpeg") {
-                    console.log("A imagem é png ou jpeg");
+            console.log("File Name: " + file.name);
+            console.log("Width: " + w);
+            console.log("Height: " + h);
+            console.log("Size: " + Math.round((file.size / 1024)));
+            console.log("File Type: " + file.type);
+            console.log("Limite: " + limiteSize);
 
-                    //-- Check size and dimensions of image
-                    if (w > 1980 || h > 1080 || size > limiteSize) {
-                        alert(
-                            "A imagem tem tamanho superior a 1MB ou dimensões superiores a 1960x1080."
-                        );
-                        input.value = "";
+            if (file.type == "image/png" || file.type == "image/jpeg") {
+                console.log("A imagem é png ou jpeg");
 
-                    } else {
-                        console.log("A imagem não tem tamanho superior a 1mb");
-                        valido = true;
-                    }
-                } else {
-                    console.log("A imagem não é png ou jpeg");
-                    alert("Imagens não é de tipo suportado! Insira uma imagem PNG ou JPEG");
-
+                //-- Check size and dimensions of image
+                if (w > 1980 || h > 1080 || size > limiteSize) {
+                    alert(
+                        "A imagem tem tamanho superior a 1MB ou dimensões superiores a 1960x1080."
+                    );
                     input.value = "";
+
+                } else {
+                    console.log("A imagem não tem tamanho superior a 1mb");
+                    valido = true;
                 }
+            } else {
+                console.log("A imagem não é png ou jpeg");
+                alert("Imagens não é de tipo suportado! Insira uma imagem PNG ou JPEG");
+
+                input.value = "";
             }
-        };
-        reader.readAsDataURL(file, input);
-        //##### End of reader
-    }
+        }
+    };
+    reader.readAsDataURL(file, input);
+    //##### End of reader
+}
 </script>
 
 </html>

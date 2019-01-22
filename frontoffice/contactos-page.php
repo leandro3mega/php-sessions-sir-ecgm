@@ -23,7 +23,7 @@ if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Round About - Start Bootstrap Template</title>
+    <title>Contactos</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">

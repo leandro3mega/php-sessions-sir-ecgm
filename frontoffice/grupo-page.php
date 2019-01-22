@@ -93,7 +93,7 @@ if ($stmt = $connectDB->prepare("SELECT cargo FROM utilizador_grupo WHERE fk_idu
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>Grupo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap core CSS -->

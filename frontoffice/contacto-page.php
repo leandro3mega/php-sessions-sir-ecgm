@@ -46,7 +46,7 @@ if (mysqli_num_rows($result) == 1) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Round About - Start Bootstrap Template</title>
+    <title>Contacto</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
